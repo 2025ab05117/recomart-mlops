@@ -1,0 +1,305 @@
+schema: '2.0'
+stages:
+  generator:
+    cmd: python -m src.versioning.dvc_stage --stage incoming --output 
+      reports/versioning/stages/incoming.json
+    deps:
+    - path: configs/versioning.yaml
+      hash: md5
+      md5: 31fb4a704961e587282c317dc1dee2f0
+      size: 1650
+    - path: data/incoming
+      hash: md5
+      md5: a5cf6cda5415fcb3c0be109dbb70375c.dir
+      size: 24566090
+      nfiles: 6
+    - path: src/generator
+      hash: md5
+      md5: 077caa9b63dfac671083a5ee4b84bce5.dir
+      size: 32980
+      nfiles: 11
+    - path: src/versioning
+      hash: md5
+      md5: f90fc4b510ef9e0dcbaac0f614857507.dir
+      size: 39201
+      nfiles: 12
+    params:
+      configs/generator.yaml:
+        generation.random_seed: 42
+        generation.reference_time_utc: '2026-07-19T12:30:00Z'
+    outs:
+    - path: reports/versioning/stages/incoming.json
+      hash: md5
+      md5: c58746a0bc6c00344d838e6fa8b1a6cb
+      size: 612
+  ingestion:
+    cmd: python -m src.versioning.dvc_stage --stage raw --output 
+      reports/versioning/stages/raw.json
+    deps:
+    - path: configs/versioning.yaml
+      hash: md5
+      md5: 31fb4a704961e587282c317dc1dee2f0
+      size: 1650
+    - path: data/raw
+      hash: md5
+      md5: 609252f0d02c9fdc1612095b3e41009c.dir
+      size: 24589277
+      nfiles: 7
+    - path: reports/versioning/stages/incoming.json
+      hash: md5
+      md5: c58746a0bc6c00344d838e6fa8b1a6cb
+      size: 612
+    - path: src/ingestion
+      hash: md5
+      md5: 9c3d268d99e7faf86b855e65f43f0819.dir
+      size: 64805
+      nfiles: 12
+    params:
+      configs/ingestion.yaml:
+        ingestion.input_path: data/incoming
+        storage.type: local
+    outs:
+    - path: reports/versioning/stages/raw.json
+      hash: md5
+      md5: 746764d5d878362dab8ad9fb751fa817
+      size: 603
+  validation:
+    cmd: python -m src.versioning.dvc_stage --stage validated --output 
+      reports/versioning/stages/validated.json
+    deps:
+    - path: configs/versioning.yaml
+      hash: md5
+      md5: 31fb4a704961e587282c317dc1dee2f0
+      size: 1650
+    - path: data/validated
+      hash: md5
+      md5: 290d42b043f32502d32688fff495d22c.dir
+      size: 9543039
+      nfiles: 6
+    - path: reports/data_quality
+      hash: md5
+      md5: c158ce33a43f05ebbd0a917210c0d7d0.dir
+      size: 156437
+      nfiles: 4
+    - path: reports/versioning/stages/raw.json
+      hash: md5
+      md5: 746764d5d878362dab8ad9fb751fa817
+      size: 603
+    - path: src/validation
+      hash: md5
+      md5: f33d060a8d62fba1f2f18f5b852806f2.dir
+      size: 141714
+      nfiles: 14
+    params:
+      configs/validation_rules.yaml:
+        quality_score:
+          completeness_weight: 0.3
+          uniqueness_weight: 0.2
+          validity_weight: 0.3
+          consistency_weight: 0.2
+        validation.config_version: '1.0'
+        validation.fail_fast: false
+    outs:
+    - path: reports/versioning/stages/validated.json
+      hash: md5
+      md5: 176a2c7850eb59296b781ba90b163aeb
+      size: 698
+  preparation:
+    cmd: python -m src.versioning.dvc_stage --stage prepared --output 
+      reports/versioning/stages/prepared.json
+    deps:
+    - path: configs/versioning.yaml
+      hash: md5
+      md5: 31fb4a704961e587282c317dc1dee2f0
+      size: 1650
+    - path: data/prepared
+      hash: md5
+      md5: 1e82d4589b215c796f80f62ded6504fc.dir
+      size: 10312670
+      nfiles: 15
+    - path: reports/versioning/stages/validated.json
+      hash: md5
+      md5: 176a2c7850eb59296b781ba90b163aeb
+      size: 698
+    - path: src/preparation
+      hash: md5
+      md5: afb98b1f1f4fe5ac758696fc3504bf29.dir
+      size: 56357
+      nfiles: 9
+    params:
+      configs/preparation.yaml:
+        interactions.weights:
+          View: 1.0
+          Wishlist: 2.0
+          AddToCart: 3.0
+          Purchase: 5.0
+        preparation.transformation_version: '1.0'
+        splitting:
+          strategy: chronological
+          train_ratio: 0.7
+          validation_ratio: 0.15
+          test_ratio: 0.15
+          minimum_records: 3
+    outs:
+    - path: reports/versioning/stages/prepared.json
+      hash: md5
+      md5: 624a2d9c4594fc52713b717635612d1f
+      size: 704
+  feature_engineering:
+    cmd: python -m src.versioning.dvc_stage --stage features --output 
+      reports/versioning/stages/features.json
+    deps:
+    - path: configs/versioning.yaml
+      hash: md5
+      md5: 31fb4a704961e587282c317dc1dee2f0
+      size: 1650
+    - path: data/features
+      hash: md5
+      md5: 90e8d79b8ce27d4ccf4a375b1864b3bb.dir
+      size: 4793110
+      nfiles: 8
+    - path: reports/versioning/stages/prepared.json
+      hash: md5
+      md5: 624a2d9c4594fc52713b717635612d1f
+      size: 704
+    - path: src/feature_engineering
+      hash: md5
+      md5: 5c3c28d0bdab236f9760f2415fc9f17d.dir
+      size: 64061
+      nfiles: 10
+    params:
+      configs/feature_engineering.yaml:
+        cooccurrence:
+          minimum_cooccurrence_count: 2
+          minimum_support: 0.001
+          maximum_neighbors_per_item: 100
+        feature_engineering.feature_source_split: train
+        feature_engineering.feature_version: '1.0'
+        similarity:
+          top_k_similar_items: 50
+          minimum_combined_similarity: 0.01
+          weights:
+            cosine: 0.45
+            jaccard: 0.2
+            category: 0.15
+            brand: 0.05
+            price: 0.1
+            rating: 0.05
+    outs:
+    - path: reports/versioning/stages/features.json
+      hash: md5
+      md5: dc0baf1bf7c1dcc2c3503e4658b020bb
+      size: 686
+  training:
+    cmd: python -m src.versioning.dvc_stage --stage models --output 
+      reports/versioning/stages/models.json
+    deps:
+    - path: configs/versioning.yaml
+      hash: md5
+      md5: 31fb4a704961e587282c317dc1dee2f0
+      size: 1650
+    - path: models
+      hash: md5
+      md5: a2d069653ecc55cc757637f18871cc90.dir
+      size: 5989670
+      nfiles: 32
+    - path: reports/model_training
+      hash: md5
+      md5: ed0c6792fff1829556faa94405f9ab0c.dir
+      size: 69271
+      nfiles: 12
+    - path: reports/versioning/stages/features.json
+      hash: md5
+      md5: dc0baf1bf7c1dcc2c3503e4658b020bb
+      size: 686
+    - path: src/modeling
+      hash: md5
+      md5: 362ca0f73240bfaacbe97c7dc5eec21e.dir
+      size: 46253
+      nfiles: 13
+    params:
+      configs/modeling.yaml:
+        collaborative:
+          algorithm: FunkSVD
+          factors: 40
+          learning_rate: 0.005
+          regularization: 0.02
+          epochs: 20
+        content_based:
+          algorithm: cosine_content
+          similarity: cosine
+          top_k: 20
+          feature_columns:
+          - category
+          - brand
+          - price_scaled
+          - average_rating
+        modeling.config_version: '1.0'
+        modeling.random_seed: 42
+    outs:
+    - path: reports/versioning/stages/models.json
+      hash: md5
+      md5: c70a67070225944764eba620860f9e30
+      size: 627
+  registry_and_lineage:
+    cmd: python -m src.versioning.cli
+    deps:
+    - path: configs/versioning.yaml
+      hash: md5
+      md5: 31fb4a704961e587282c317dc1dee2f0
+      size: 1650
+    - path: reports/eda
+      hash: md5
+      md5: 4990006e14717d12b993cae9bdfa8b70.dir
+      size: 560934
+      nfiles: 11
+    - path: reports/versioning/stages/features.json
+      hash: md5
+      md5: dc0baf1bf7c1dcc2c3503e4658b020bb
+      size: 686
+    - path: reports/versioning/stages/incoming.json
+      hash: md5
+      md5: c58746a0bc6c00344d838e6fa8b1a6cb
+      size: 612
+    - path: reports/versioning/stages/models.json
+      hash: md5
+      md5: c70a67070225944764eba620860f9e30
+      size: 627
+    - path: reports/versioning/stages/prepared.json
+      hash: md5
+      md5: 624a2d9c4594fc52713b717635612d1f
+      size: 704
+    - path: reports/versioning/stages/raw.json
+      hash: md5
+      md5: 746764d5d878362dab8ad9fb751fa817
+      size: 603
+    - path: reports/versioning/stages/validated.json
+      hash: md5
+      md5: 176a2c7850eb59296b781ba90b163aeb
+      size: 698
+    - path: src/versioning
+      hash: md5
+      md5: f90fc4b510ef9e0dcbaac0f614857507.dir
+      size: 39201
+      nfiles: 12
+    outs:
+    - path: reports/versioning/dataset_registry.json
+      hash: md5
+      md5: c61899b1ac088c2d33c01b2818cd82d7
+      size: 7138
+    - path: reports/versioning/dvc_metrics.json
+      hash: md5
+      md5: b6bcc098232e9dc250445476aa0f6484
+      size: 121
+    - path: reports/versioning/lineage_report.json
+      hash: md5
+      md5: d274d99f90576880f60632a91d545197
+      size: 17409
+    - path: reports/versioning/pipeline_lineage.png
+      hash: md5
+      md5: 63c08217f6222d5e2cad860716e4ad04
+      size: 95854
+    - path: reports/versioning/version_summary.json
+      hash: md5
+      md5: 3c94d559b6773da172aface9a8a2888a
+      size: 1834

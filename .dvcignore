@@ -1,0 +1,10 @@
+# Runtime state that must not enter the DVC cache.
+.git/
+.dvc/cache/
+.venv/
+__pycache__/
+*.pyc
+logs/
+mlruns/
+notebooks/*_executed.ipynb
+data/recomart_features.db

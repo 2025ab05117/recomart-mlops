@@ -35,3 +35,4 @@ reports/model_training/*
 !reports/model_training/.gitkeep
 mlruns/*
 !mlruns/.gitkeep
+/models

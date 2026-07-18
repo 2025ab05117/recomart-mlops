@@ -1,0 +1,60 @@
+versioning:
+  schema_version: "1.0"
+  created_by: recomart-versioning
+  registry_path: reports/versioning/dataset_registry.json
+  lineage_path: reports/versioning/lineage_report.json
+  summary_path: reports/versioning/version_summary.json
+  metrics_path: reports/versioning/dvc_metrics.json
+  graph_path: reports/versioning/pipeline_lineage.png
+  stage_snapshot_path: reports/versioning/stages
+
+versions:
+  incoming: "1.0.0"
+  raw: "1.0.0"
+  validated: "1.0.0"
+  prepared: "1.0.0"
+  features: "1.0.0"
+  models: "1.0.0"
+  eda_reports: "1.0.0"
+  model_reports: "1.0.0"
+
+artifacts:
+  incoming:
+    location: data/incoming
+    parent: null
+    transformation: synthetic_batch_generation
+  raw:
+    location: data/raw
+    parent: incoming
+    transformation: immutable_file_and_api_ingestion
+  validated:
+    location: data/validated
+    parent: raw
+    transformation: schema_quality_and_referential_validation
+  prepared:
+    location: data/prepared
+    parent: validated
+    transformation: cleaning_encoding_normalization_and_chronological_split
+  features:
+    location: data/features
+    parent: prepared
+    transformation: point_in_time_recommendation_feature_engineering
+  models:
+    location: models
+    parent: features
+    transformation: collaborative_and_content_model_training
+  eda_reports:
+    location: reports/eda
+    parent: prepared
+    transformation: exploratory_data_analysis
+  model_reports:
+    location: reports/model_training
+    parent: models
+    transformation: model_evaluation_and_comparison_reporting
+
+logging:
+  level: INFO
+  directory: logs/versioning
+  filename: versioning.log
+  max_bytes: 5242880
+  backup_count: 5

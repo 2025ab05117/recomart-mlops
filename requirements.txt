@@ -19,3 +19,4 @@ SQLAlchemy
 psycopg[binary]
 mlflow
 joblib
+dvc

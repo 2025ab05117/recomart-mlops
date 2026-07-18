@@ -1,0 +1,115 @@
+﻿stages:
+  generator:
+    cmd: python -m src.versioning.dvc_stage --stage incoming --output reports/versioning/stages/incoming.json
+    deps:
+      - src/generator
+      - src/versioning
+      - data/incoming
+      - configs/versioning.yaml
+    params:
+      - configs/generator.yaml:
+          - generation.random_seed
+          - generation.reference_time_utc
+    outs:
+      - reports/versioning/stages/incoming.json
+
+  ingestion:
+    cmd: python -m src.versioning.dvc_stage --stage raw --output reports/versioning/stages/raw.json
+    deps:
+      - reports/versioning/stages/incoming.json
+      - src/ingestion
+      - data/raw
+      - configs/versioning.yaml
+    params:
+      - configs/ingestion.yaml:
+          - ingestion.input_path
+          - storage.type
+    outs:
+      - reports/versioning/stages/raw.json
+
+  validation:
+    cmd: python -m src.versioning.dvc_stage --stage validated --output reports/versioning/stages/validated.json
+    deps:
+      - reports/versioning/stages/raw.json
+      - src/validation
+      - data/validated
+      - reports/data_quality
+      - configs/versioning.yaml
+    params:
+      - configs/validation_rules.yaml:
+          - validation.config_version
+          - validation.fail_fast
+          - quality_score
+    outs:
+      - reports/versioning/stages/validated.json
+
+  preparation:
+    cmd: python -m src.versioning.dvc_stage --stage prepared --output reports/versioning/stages/prepared.json
+    deps:
+      - reports/versioning/stages/validated.json
+      - src/preparation
+      - data/prepared
+      - configs/versioning.yaml
+    params:
+      - configs/preparation.yaml:
+          - preparation.transformation_version
+          - interactions.weights
+          - splitting
+    outs:
+      - reports/versioning/stages/prepared.json
+
+  feature_engineering:
+    cmd: python -m src.versioning.dvc_stage --stage features --output reports/versioning/stages/features.json
+    deps:
+      - reports/versioning/stages/prepared.json
+      - src/feature_engineering
+      - data/features
+      - configs/versioning.yaml
+    params:
+      - configs/feature_engineering.yaml:
+          - feature_engineering.feature_version
+          - feature_engineering.feature_source_split
+          - cooccurrence
+          - similarity
+    outs:
+      - reports/versioning/stages/features.json
+
+  training:
+    cmd: python -m src.versioning.dvc_stage --stage models --output reports/versioning/stages/models.json
+    deps:
+      - reports/versioning/stages/features.json
+      - src/modeling
+      - models
+      - reports/model_training
+      - configs/versioning.yaml
+    params:
+      - configs/modeling.yaml:
+          - modeling.config_version
+          - modeling.random_seed
+          - collaborative
+          - content_based
+    outs:
+      - reports/versioning/stages/models.json
+
+  registry_and_lineage:
+    cmd: python -m src.versioning.cli
+    deps:
+      - src/versioning
+      - reports/versioning/stages/incoming.json
+      - reports/versioning/stages/raw.json
+      - reports/versioning/stages/validated.json
+      - reports/versioning/stages/prepared.json
+      - reports/versioning/stages/features.json
+      - reports/versioning/stages/models.json
+      - reports/eda
+      - configs/versioning.yaml
+    outs:
+      - reports/versioning/dataset_registry.json:
+          persist: true
+      - reports/versioning/lineage_report.json
+      - reports/versioning/version_summary.json
+      - reports/versioning/pipeline_lineage.png
+    metrics:
+      - reports/versioning/dvc_metrics.json
+
+
