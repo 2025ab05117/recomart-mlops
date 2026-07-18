@@ -11,3 +11,10 @@ data/raw/*
 !data/raw/.gitkeep
 logs/*
 !logs/.gitkeep
+# Generated validation artifacts
+data/validated/*
+!data/validated/.gitkeep
+data/quarantine/*
+!data/quarantine/.gitkeep
+reports/data_quality/*
+!reports/data_quality/.gitkeep

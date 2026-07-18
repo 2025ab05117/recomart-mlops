@@ -1,0 +1,115 @@
+validation:
+  config_version: "1.0"
+  fail_fast: false
+  strict_quality: false
+  sample_error_count: 5
+  future_timestamp_tolerance_minutes: 5
+  popularity_max_age_hours: 168
+
+paths:
+  raw: data/raw
+  validated: data/validated
+  quarantine: data/quarantine
+  reports: reports/data_quality
+
+quality_score:
+  completeness_weight: 0.30
+  uniqueness_weight: 0.20
+  validity_weight: 0.30
+  consistency_weight: 0.20
+
+users:
+  required_columns:
+    - user_id
+    - age
+    - gender
+    - occupation
+    - zipcode
+    - registration_date
+    - customer_segment
+  age:
+    minimum: 1
+    maximum: 120
+  allowed_genders:
+    - M
+    - F
+  allowed_segments:
+    - Premium
+    - Gold
+    - Silver
+    - Standard
+
+products:
+  required_columns:
+    - product_id
+    - product_name
+    - category
+    - release_date
+    - price
+    - brand
+    - average_rating
+    - total_ratings
+  minimum_price: 0.01
+  rating:
+    minimum: 1
+    maximum: 5
+    unrated_value: 0
+
+clickstream:
+  required_columns:
+    - event_id
+    - user_id
+    - product_id
+    - event_type
+    - timestamp
+    - session_id
+  allowed_event_types:
+    - View
+    - Wishlist
+    - AddToCart
+
+purchasehistory:
+  required_columns:
+    - order_id
+    - user_id
+    - product_id
+    - quantity
+    - amount
+    - rating
+    - purchase_timestamp
+  quantity:
+    minimum: 1
+    maximum: 100
+  rating:
+    minimum: 1
+    maximum: 5
+    purchase_minimum_rating: 4
+  amount_tolerance: 0.01
+
+popularity:
+  required_columns:
+    - product_id
+    - average_rating
+    - total_ratings
+    - popularity_score
+    - trend
+    - updated_at
+  score:
+    minimum: 0
+    maximum: 100
+  rating:
+    minimum: 1
+    maximum: 5
+    unrated_value: 0
+  allowed_trends:
+    - UP
+    - DOWN
+  rating_tolerance: 0.01
+  total_ratings_tolerance: 0
+
+logging:
+  level: INFO
+  directory: logs/validation
+  filename: validation.log
+  max_bytes: 5242880
+  backup_count: 5
