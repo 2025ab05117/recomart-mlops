@@ -1,2 +1,13 @@
-/.idea
+﻿/.idea
 
+# Python runtime artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+# Local environment and secrets
+.env
+# Generated pipeline runtime data and logs
+data/raw/*
+!data/raw/.gitkeep
+logs/*
+!logs/.gitkeep

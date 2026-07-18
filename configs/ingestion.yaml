@@ -1,0 +1,39 @@
+ingestion:
+  input_path: data/incoming
+  required_files:
+    - users.csv
+    - products.json
+    - clickstream.csv
+    - purchasehistory.csv
+  popularity_api_url: http://localhost:8000/api/v1/popularity
+  request:
+    connect_timeout_seconds: 5
+    read_timeout_seconds: 30
+    max_attempts: 3
+    backoff_seconds:
+      - 1
+      - 2
+      - 4
+
+storage:
+  type: local
+  local:
+    raw_path: data/raw
+  s3:
+    bucket: ""
+    prefix: raw
+    region: ""
+    endpoint_url: ""
+    profile: ""
+    max_attempts: 3
+    backoff_seconds:
+      - 1
+      - 2
+      - 4
+
+logging:
+  level: INFO
+  directory: logs/ingestion
+  filename: ingestion.log
+  max_bytes: 5242880
+  backup_count: 5
