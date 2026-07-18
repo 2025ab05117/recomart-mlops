@@ -1,0 +1,30 @@
+source:
+  base_directory: data/basedata/ml-100k
+  nested_directory_name: ml-100k
+output:
+  incoming_directory: data/incoming
+  overwrite_existing: false
+generation:
+  random_seed: 42
+  reference_time_utc: "2026-07-19T12:30:00Z"
+  registration_lookback_years: 5
+  clickstream_lookback_hours: 24
+  purchase_delay_minutes:
+    minimum: 5
+    maximum: 180
+  session_inactivity_minutes: 30
+  price:
+    minimum: 100.0
+    maximum: 3000.0
+  customer_segments: [Premium, Gold, Silver, Standard]
+  brands:
+    - NovaCart
+    - UrbanNest
+    - PrimeCraft
+    - BluePeak
+    - EverBright
+    - HomeSphere
+    - TechHaven
+    - PureVista
+    - ApexLiving
+    - GreenTrail
