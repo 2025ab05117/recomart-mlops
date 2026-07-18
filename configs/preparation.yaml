@@ -1,0 +1,69 @@
+preparation:
+  config_version: "1.0"
+  transformation_version: "1.0"
+  validated_path: data/validated
+  validation_report_path: reports/data_quality
+  output_path: data/prepared
+  report_path: reports/eda
+  unknown_category: Unknown
+
+interactions:
+  weights:
+    View: 1.0
+    Wishlist: 2.0
+    AddToCart: 3.0
+    Purchase: 5.0
+
+encoding:
+  one_hot:
+    users:
+      - gender
+      - occupation
+      - customer_segment
+    products:
+      - category
+      - trend
+  frequency:
+    products:
+      - brand
+
+normalization:
+  standard_scale:
+    users:
+      - age
+      - user_registration_age_days
+    products:
+      - price
+      - average_rating
+      - popularity_score
+      - product_age_days
+    interactions:
+      - amount
+  log1p_then_scale:
+    products:
+      - total_ratings
+    aggregated_interactions:
+      - interaction_count
+      - purchase_count
+      - total_spend
+      - implicit_score
+
+splitting:
+  strategy: chronological
+  train_ratio: 0.70
+  validation_ratio: 0.15
+  test_ratio: 0.15
+  minimum_records: 3
+
+eda:
+  heatmap_top_users: 50
+  heatmap_top_products: 50
+  top_items_to_display: 20
+  plot_dpi: 150
+
+logging:
+  level: INFO
+  directory: logs/preparation
+  filename: preparation.log
+  max_bytes: 5242880
+  backup_count: 5

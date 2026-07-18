@@ -18,3 +18,9 @@ data/quarantine/*
 !data/quarantine/.gitkeep
 reports/data_quality/*
 !reports/data_quality/.gitkeep
+# Generated preparation artifacts
+data/prepared/*
+!data/prepared/.gitkeep
+reports/eda/*
+!reports/eda/.gitkeep
+notebooks/*_executed.ipynb
