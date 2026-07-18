@@ -1,0 +1,46 @@
+feature_engineering:
+  config_version: "1.0"
+  prepared_path: data/prepared
+  output_path: data/features
+  feature_source_split: train
+  cold_start_minimum_interactions: 5
+  cold_start_minimum_users: 3
+  feature_version: "1.0"
+
+activity:
+  windows_days: [1, 7, 30]
+
+user_activity_level:
+  method: quantile
+  low_quantile: 0.33
+  high_quantile: 0.66
+
+cooccurrence:
+  minimum_cooccurrence_count: 2
+  minimum_support: 0.001
+  maximum_neighbors_per_item: 100
+
+similarity:
+  top_k_similar_items: 50
+  minimum_combined_similarity: 0.01
+  weights:
+    cosine: 0.45
+    jaccard: 0.20
+    category: 0.15
+    brand: 0.05
+    price: 0.10
+    rating: 0.05
+
+database:
+  engine: postgresql
+  schema: recomart_features
+  connection_env_var: RECOMART_DATABASE_URL
+  sqlite_fallback_url: sqlite:///data/recomart_features.db
+  batch_size: 5000
+
+logging:
+  level: INFO
+  directory: logs/feature_engineering
+  filename: feature_engineering.log
+  max_bytes: 5242880
+  backup_count: 5

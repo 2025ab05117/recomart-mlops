@@ -24,3 +24,7 @@ data/prepared/*
 reports/eda/*
 !reports/eda/.gitkeep
 notebooks/*_executed.ipynb
+# Generated feature artifacts and local warehouse
+data/features/*
+!data/features/.gitkeep
+data/recomart_features.db
