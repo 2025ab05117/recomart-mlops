@@ -28,3 +28,10 @@ notebooks/*_executed.ipynb
 data/features/*
 !data/features/.gitkeep
 data/recomart_features.db
+# Generated modeling artifacts and local MLflow store
+models/*
+!models/.gitkeep
+reports/model_training/*
+!reports/model_training/.gitkeep
+mlruns/*
+!mlruns/.gitkeep

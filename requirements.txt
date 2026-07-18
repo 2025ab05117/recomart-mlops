@@ -17,3 +17,5 @@ nbformat
 nbconvert
 SQLAlchemy
 psycopg[binary]
+mlflow
+joblib

@@ -1,0 +1,36 @@
+modeling:
+  config_version: "1.0"
+  feature_database_url: sqlite:///data/recomart_features.db
+  feature_path: data/features
+  prepared_path: data/prepared
+  model_path: models
+  report_path: reports/model_training
+  experiment_name: recomart-recommendation-models
+  tracking_uri: mlruns
+  random_seed: 42
+  relevance_rating_threshold: 4.0
+  top_k: 10
+
+collaborative:
+  algorithm: FunkSVD
+  factors: 40
+  learning_rate: 0.005
+  regularization: 0.02
+  epochs: 20
+
+content_based:
+  algorithm: cosine_content
+  similarity: cosine
+  top_k: 20
+  feature_columns:
+    - category
+    - brand
+    - price_scaled
+    - average_rating
+
+logging:
+  level: INFO
+  directory: logs/modeling
+  filename: model_training.log
+  max_bytes: 5242880
+  backup_count: 5
