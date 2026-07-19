@@ -74,3 +74,15 @@ airflow dags test recomart_end_to_end_pipeline -f dags/recomart_end_to_end_dag.p
 
 This produces task logs and output artifacts but does not replace a scheduler/UI
 run for screenshot evidence.
+## Export Final Task Evidence
+
+After a run reaches a terminal state, enrich the DAG-generated report with the
+authoritative Airflow task table and retry counts:
+
+```bash
+python airflow/scripts/export_execution_evidence.py \
+  --run-id "manual__2026-07-19T00:11:38.097170+00:00"
+```
+
+Run this inside the Airflow environment. It updates the task CSV, JSON summary,
+and plain-text evidence without copying datasets into Airflow metadata.
