@@ -1,0 +1,37 @@
+﻿services:
+  airflow:
+    build:
+      context: ..
+      dockerfile: airflow/docker/Dockerfile
+    command: airflow standalone
+    depends_on:
+      - api
+    environment:
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/project/dags
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__DEFAULT_TIMEZONE: utc
+      PYTHONPATH: /opt/airflow/project
+      RECOMART_DATABASE_URL: sqlite:////opt/airflow/project/data/recomart_features.db
+      MLFLOW_TRACKING_URI: file:/opt/airflow/project/mlruns
+      RECOMART_POPULARITY_API_URL: http://api:8000/api/v1/popularity
+    ports:
+      - "8080:8080"
+    volumes:
+      - ..:/opt/airflow/project
+      - airflow-home:/opt/airflow
+
+  api:
+    build:
+      context: ..
+      dockerfile: airflow/docker/Dockerfile
+    command: bash -c "python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000"
+    environment:
+      PYTHONPATH: /opt/airflow/project
+    ports:
+      - "8000:8000"
+    volumes:
+      - ..:/opt/airflow/project
+
+volumes:
+  airflow-home:

@@ -36,3 +36,14 @@ reports/model_training/*
 mlruns/*
 !mlruns/.gitkeep
 /models
+# Airflow and orchestration runtime artifacts
+.airflow/
+.airflow-venv/
+airflow.db
+airflow.cfg
+webserver_config.py
+standalone_admin_password.txt
+logs/airflow/
+logs/scheduler/
+reports/orchestration/
+*.pid

@@ -1,0 +1,17 @@
+# Runtime libraries needed by stage runners inside the Airflow 3.1.2 image.
+# Versions are selected by Airflow's official Python 3.12 constraints file.
+PyYAML
+httpx
+boto3
+reportlab
+numpy
+pyarrow
+scikit-learn
+matplotlib
+seaborn
+scipy
+SQLAlchemy
+psycopg[binary]
+mlflow
+joblib
+dvc

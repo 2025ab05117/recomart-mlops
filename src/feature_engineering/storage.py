@@ -6,8 +6,8 @@ import json
 from typing import Any
 
 import pandas as pd
-from sqlalchemy import Engine, create_engine, inspect, text
-from sqlalchemy.engine import make_url
+from sqlalchemy import create_engine, inspect, text
+from sqlalchemy.engine import Engine, make_url
 
 from src.feature_engineering.config import FeatureConfig
 from src.feature_engineering.errors import (
@@ -232,4 +232,5 @@ class FeatureWarehouse:
             SELECT * FROM {prefix}latest_user_features
             ORDER BY total_interactions DESC
         """))
+
 

@@ -1,0 +1,2 @@
+# Install this exact release with the official Python-version constraints file.
+apache-airflow==3.1.2
