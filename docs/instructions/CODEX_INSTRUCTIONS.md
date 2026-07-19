@@ -2,17 +2,31 @@
 
 ## Required Preparation
 
-Before generating or modifying code:
+Before generating or modifying code, use this tiered reading model.
 
-1. Read every Markdown document in `docs/`.
-2. Inspect the existing repository structure and nearby implementation.
-3. Identify the owning module, data layer, and public contract.
-4. Confirm that the requested behavior does not bypass the canonical data flow.
-5. Preserve unrelated existing work.
+### Always Required
+
+1. Read `docs/README.md`.
+2. Read `docs/instructions/CODEX_INSTRUCTIONS.md`.
+3. Read `docs/architecture/SYSTEM_ARCHITECTURE.md`.
+4. Read `docs/standards/DEVELOPMENT_GUIDE.md`.
+5. Read `docs/standards/CODING_STANDARDS.md`.
+
+### Required for Stage Changes
+
+Read every document under `docs/pipeline/<stage>/` for the stage being changed.
+
+### Required for Cross-Cutting Changes
+
+Read the relevant documents under `docs/architecture/` and `docs/operations/`.
+Schema specifications remain with their owning pipeline stage.
+
+Then inspect the existing repository structure and nearby implementation, identify
+the owning module, data layer, and public contract, confirm the requested behavior
+does not bypass the canonical data flow, and preserve unrelated existing work.
 
 The documentation is the single source of truth. If a request conflicts with it,
 state the conflict and resolve the specification before implementing.
-
 ## Project Mission
 
 Build an enterprise-grade recommendation-system data management pipeline using
@@ -21,7 +35,7 @@ Scikit-Learn, and MLflow on Python 3.12.
 
 The canonical architecture is:
 
-`MovieLens → FastAPI Generator → S3 Incoming → Airflow → Raw → Validation → Prepared → Feature Engineering → Feature Store → Lineage → Model Training → MLflow → Reports`
+`MovieLens â†’ FastAPI Generator â†’ S3 Incoming â†’ Airflow â†’ Raw â†’ Validation â†’ Prepared â†’ Feature Engineering â†’ Feature Store â†’ Lineage â†’ Model Training â†’ MLflow â†’ Reports`
 
 ## Implementation Boundaries
 
@@ -38,7 +52,7 @@ The canonical architecture is:
 
 The only permitted processing progression is:
 
-`Incoming → Raw → Validated → Prepared → Features → Models → Reports`
+`Incoming â†’ Raw â†’ Validated â†’ Prepared â†’ Features â†’ Models â†’ Reports`
 
 Do not read across layers as a shortcut. Raw preserves source truth. Validation
 publishes accepted data and explicit rejects. Prepared data is canonical.

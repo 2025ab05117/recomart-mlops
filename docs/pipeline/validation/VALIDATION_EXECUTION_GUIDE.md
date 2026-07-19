@@ -5,7 +5,7 @@
 Use Python 3.12 and install `requirements.txt`. A successful ingestion manifest
 and all five checksum-matching raw objects must exist. For the normal local
 flow, first run the popularity API and ingestion as described in
-`INGESTION_EXECUTION_GUIDE.md`.
+[Ingestion Execution Guide](../ingestion/INGESTION_EXECUTION_GUIDE.md).
 
 ## Commands
 
