@@ -1,4 +1,4 @@
-﻿services:
+services:
   airflow:
     build:
       context: ..
@@ -13,7 +13,7 @@
       AIRFLOW__CORE__DEFAULT_TIMEZONE: utc
       PYTHONPATH: /opt/airflow/project
       RECOMART_DATABASE_URL: sqlite:////opt/airflow/project/data/recomart_features.db
-      MLFLOW_TRACKING_URI: file:/opt/airflow/project/mlruns
+      MLFLOW_TRACKING_URI: file:/opt/airflow/project/reports/orchestration/mlruns
       RECOMART_POPULARITY_API_URL: http://api:8000/api/v1/popularity
     ports:
       - "8080:8080"

@@ -1,4 +1,4 @@
-﻿"""Thin application-service adapters used by Airflow tasks.
+"""Thin application-service adapters used by Airflow tasks.
 
 This module deliberately contains no data transformations. It invokes the
 existing stage runners and converts their durable manifests to small XCom
@@ -8,6 +8,7 @@ contracts.
 from __future__ import annotations
 
 import logging
+import math
 from dataclasses import replace
 from pathlib import Path
 from typing import Any
@@ -264,7 +265,14 @@ def train_and_evaluate_models(
         "report_paths": summary["report_paths"],
         "model_paths": model_paths,
         "metrics": {
-            name: result["metrics"]
+            name: {
+                key: (
+                    value
+                    if not isinstance(value, float) or math.isfinite(value)
+                    else None
+                )
+                for key, value in result["metrics"].items()
+            }
             for name, result in summary["models"].items()
         },
     }
@@ -288,9 +296,9 @@ def finalize_model_lineage(
     lineage = service.generate_lineage()
     summary = service.generate_summary(lineage)
     verification = service.verify()
-    if not verification.get("valid", False):
+    if verification.get("status") != "SUCCESS":
         raise StageExecutionError(
-            f"Version verification failed: {verification.get('errors')}"
+            f"Version verification failed: {verification.get('failures')}"
         )
     return {
         "status": "SUCCESS",
@@ -306,4 +314,3 @@ def _load_json(path: Path) -> dict[str, Any]:
     import json
 
     return json.loads(path.read_text(encoding="utf-8"))
-

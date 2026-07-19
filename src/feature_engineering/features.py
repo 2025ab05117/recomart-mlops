@@ -312,9 +312,9 @@ def compute_user_item_features(
         brand_weight.get((u, b), 0) / user_weight.get(u, 1)
         for u, b in zip(result.user_id, result.brand)
     ]
-    preferred_price = event.groupby("user_id").apply(
-        lambda x: np.average(x.price, weights=x.interaction_weight),
-        include_groups=False,
+    weighted_price = event["price"] * event["interaction_weight"]
+    preferred_price = weighted_price.groupby(event["user_id"]).sum().div(
+        event["interaction_weight"].groupby(event["user_id"]).sum()
     )
     result["price_preference_distance"] = (
         result.price - result.user_id.map(preferred_price)

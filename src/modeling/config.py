@@ -1,8 +1,9 @@
-﻿"""Typed reproducible model-training configuration."""
+"""Typed reproducible model-training configuration."""
 
 from __future__ import annotations
 
 import hashlib
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -89,7 +90,10 @@ def load_modeling_config(
             model_path=resolve(model["model_path"]),
             report_path=resolve(model["report_path"]),
             experiment_name=str(model["experiment_name"]),
-            tracking_uri=str(model["tracking_uri"]),
+            tracking_uri=str(
+                os.environ.get("MLFLOW_TRACKING_URI")
+                or model["tracking_uri"]
+            ),
             random_seed=int(model["random_seed"]),
             threshold=float(model["relevance_rating_threshold"]),
             top_k=int(cli.get("top_k", model["top_k"])),

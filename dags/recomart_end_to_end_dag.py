@@ -71,7 +71,10 @@ def _runtime_conf() -> tuple[dict[str, Any], str]:
 
 def _task_rows(dag_run: Any) -> list[dict[str, Any]]:
     rows = []
-    for instance in dag_run.get_task_instances():
+    getter = getattr(dag_run, "get_task_instances", None)
+    if not callable(getter):
+        return rows
+    for instance in getter():
         started = getattr(instance, "start_date", None)
         ended = getattr(instance, "end_date", None)
         duration = (
