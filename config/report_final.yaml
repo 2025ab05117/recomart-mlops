@@ -1,0 +1,287 @@
+report:
+  title: "RecoMart Recommendation System"
+  subtitle: "End-to-End Data Engineering and MLOps Pipeline"
+  institution: "BITS Pilani – Work Integrated Learning Programmes"
+  assignment: "DM4DL Assignment"
+  version: "2.0"
+  output: "reports/final/RecoMart_Project_Report_v2.docx"
+  generated_date: true
+
+format:
+  page_size: "A4"
+  orientation: "portrait"
+  body_font: "Calibri"
+  body_font_size: 11
+  heading_font: "Calibri"
+  image_max_width_inches: 6.3
+  include_header: true
+  include_footer: true
+  include_page_numbers: true
+  include_table_of_contents: true
+
+team:
+  - serial_no: 1
+    name: "RAMAMURTHY S"
+    bits_id: "2025ab05099@wilp.bits-pilani.ac.in"
+
+  - serial_no: 2
+    name: "MEGHA ASHWIN KANU"
+    bits_id: "2025ab05130@wilp.bits-pilani.ac.in"
+
+  - serial_no: 3
+    name: "RANJITA PATEL"
+    bits_id: "2025ab05117@wilp.bits-pilani.ac.in"
+
+  - serial_no: 4
+    name: "KIRAN KUMAR DEVARA"
+    bits_id: "2025ab05105@wilp.bits-pilani.ac.in"
+
+  - serial_no: 5
+    name: "VIVEK RANJAN UPADHYAY"
+    bits_id: "2025ab05127@wilp.bits-pilani.ac.in"
+
+sections:
+  - id: "project_title"
+    title: "Project Title"
+    type: "title_page"
+    enabled: true
+
+  - id: "team_members"
+    title: "Team Member Details"
+    type: "team_table"
+    enabled: true
+
+  - id: "problem_statement"
+    title: "Problem Statement"
+    type: "markdown"
+    enabled: true
+    sources:
+      - "README.md"
+      - "docs/architecture/**/*.md"
+      - "docs/pipeline/**/*.md"
+    include_topics:
+      - "problem statement"
+      - "business problem"
+      - "recommendation system"
+      - "data challenges"
+      - "reproducibility"
+
+  - id: "objectives"
+    title: "Objectives"
+    type: "markdown"
+    enabled: true
+    sources:
+      - "README.md"
+      - "docs/instructions/**/*.md"
+      - "docs/pipeline/**/*.md"
+    include_topics:
+      - "objectives"
+      - "goals"
+      - "expected outcomes"
+      - "deliverables"
+
+  - id: "methodology_pipeline"
+    title: "Methodology / Pipeline"
+    type: "markdown_and_pipeline"
+    enabled: true
+    sources:
+      - "docs/architecture/**/*.md"
+      - "docs/pipeline/**/*.md"
+      - "README.md"
+    pipeline:
+      - "MovieLens Seed Data"
+      - "Synthetic Data Generator"
+      - "Data Ingestion"
+      - "Raw Storage"
+      - "Validation and Quarantine"
+      - "Data Preparation and EDA"
+      - "Feature Engineering"
+      - "Feature Store"
+      - "DVC Versioning and Lineage"
+      - "Model Training and Evaluation"
+      - "MLflow Experiment Tracking"
+      - "Apache Airflow Orchestration"
+
+  - id: "implementation_details"
+    title: "Implementation Details"
+    type: "implementation"
+    enabled: true
+    subsections:
+      - title: "Synthetic Data Generation"
+        sources:
+          - "docs/pipeline/**/*generator*.md"
+          - "docs/pipeline/**/*data*.md"
+
+      - title: "Data Ingestion"
+        sources:
+          - "docs/pipeline/**/*ingestion*.md"
+
+      - title: "Storage Structure"
+        sources:
+          - "docs/architecture/**/*storage*.md"
+          - "docs/pipeline/**/*storage*.md"
+
+      - title: "Data Validation and Quarantine"
+        sources:
+          - "docs/pipeline/**/*validation*.md"
+
+      - title: "Data Preparation and EDA"
+        sources:
+          - "docs/pipeline/**/*preparation*.md"
+          - "docs/pipeline/**/*eda*.md"
+
+      - title: "Feature Engineering"
+        sources:
+          - "docs/pipeline/**/*feature*.md"
+
+      - title: "Feature Store"
+        sources:
+          - "docs/pipeline/**/*feature_store*.md"
+          - "docs/architecture/**/*feature*.md"
+        artifact: "feature_store"
+
+      - title: "DVC Versioning and Lineage"
+        sources:
+          - "docs/pipeline/**/*version*.md"
+          - "docs/operations/**/*dvc*.md"
+        artifact: "dvc"
+
+      - title: "Model Training and Evaluation"
+        sources:
+          - "docs/pipeline/**/*model*.md"
+          - "docs/pipeline/**/*training*.md"
+        artifact: "mlflow"
+
+      - title: "Apache Airflow Orchestration"
+        sources:
+          - "docs/pipeline/**/*orchestration*.md"
+          - "docs/operations/**/*airflow*.md"
+
+  - id: "results"
+    title: "Results and Output Screenshots"
+    type: "results"
+    enabled: true
+    include:
+      - "screenshots"
+      - "latest_eda"
+      - "feature_store_summary"
+      - "dvc_summary"
+      - "mlflow_summary"
+
+  - id: "conclusion_future_scope"
+    title: "Conclusion and Future Scope"
+    type: "markdown"
+    enabled: true
+    sources:
+      - "README.md"
+      - "docs/reporting/**/*.md"
+      - "docs/architecture/**/*.md"
+    include_topics:
+      - "conclusion"
+      - "achievements"
+      - "future scope"
+      - "future enhancements"
+
+artifacts:
+  screenshots:
+    directories:
+      - "reports/screenshots"
+      - "screenshots"
+    recursive: true
+    mappings:
+      - pattern: "*repository*"
+        title: "Repository Structure"
+
+      - pattern: "*clickstream*"
+        title: "Clickstream Dataset"
+
+      - pattern: "*purchase*"
+        title: "Purchase History Dataset"
+
+      - pattern: "*raw_storage*"
+        title: "Raw Storage Structure"
+
+      - pattern: "*storage_structure*"
+        title: "Storage Structure"
+
+      - pattern: "*mlrun*"
+        title: "MLflow Experiment Runs"
+
+      - pattern: "*mlflow*"
+        title: "MLflow Experiment Tracking"
+
+      - pattern: "*airflow*"
+        title: "Apache Airflow Orchestration"
+
+      - pattern: "*dag*"
+        title: "Airflow DAG Execution"
+
+      - pattern: "*conclusion*"
+        title: "RecoMart Achievements"
+
+  eda:
+    root: "reports/eda"
+    selection: "latest_partition"
+    date_prefix: "processing_date="
+    hour_prefix: "processing_hour="
+    batch_prefix: "batch_id="
+    image_patterns:
+      - "*.png"
+    summary_file: "eda_summary.json"
+
+  feature_store:
+    type: "sqlite"
+    paths:
+      - "data/recomart_features.db"
+      - "data/features/recomart_features.db"
+    include_schema: true
+    include_row_counts: true
+    include_primary_keys: true
+    include_sample_rows: true
+    sample_row_limit: 5
+
+  dvc:
+    pipeline_file: "dvc.yaml"
+    lock_file: "dvc.lock"
+    include_stages: true
+    include_dependencies: true
+    include_outputs: true
+    include_commands: true
+    run_cli_when_available: true
+
+  mlflow:
+    tracking_locations:
+      - "mlflow.db"
+      - "mlruns"
+    experiment_name: "recomart-recommendation-models"
+    latest_successful_runs: true
+    runs_per_model: 1
+    include_parameters: true
+    include_metrics: true
+    include_run_ids: true
+
+content_rules:
+  use_markdown_as_source_of_truth: true
+  avoid_duplicate_paragraphs: true
+  remove_markdown_navigation_text: true
+  exclude_headings:
+    - "Table of Contents"
+    - "Navigation"
+    - "Document Index"
+  maximum_paragraphs_per_source: 8
+  unsupported_content_behavior: "skip"
+  missing_source_behavior: "continue"
+
+validation:
+  required_section_ids:
+    - "project_title"
+    - "team_members"
+    - "problem_statement"
+    - "objectives"
+    - "methodology_pipeline"
+    - "implementation_details"
+    - "results"
+    - "conclusion_future_scope"
+  reject_additional_top_level_sections: true
+  require_all_team_members: true
+  require_output_file: true

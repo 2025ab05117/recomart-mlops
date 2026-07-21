@@ -1,0 +1,45 @@
+{
+  "generation_timestamp": "2026-07-21T09:11:23Z",
+  "selected_eda_batch": "RECO_20260720_114419_07a4ea",
+  "mlflow_experiment": "recomart-recommendation-models",
+  "selected_mlflow_runs": [
+    "448b5f7fa1b94b578ceb8172f4f7aab3",
+    "4153587f54d04076b67dd0d3867f9c41"
+  ],
+  "feature_store_database_path": "data/recomart_features.db",
+  "feature_store_tables": [
+    "feature_batch",
+    "feature_definition",
+    "feature_lineage",
+    "item_cooccurrence_features",
+    "item_features",
+    "item_similarity_features",
+    "user_features",
+    "user_item_features"
+  ],
+  "screenshots_included": [
+    "reports/screenshots/02_datasets_clickstream.png",
+    "reports/screenshots/02_datasets_purchase.png",
+    "reports/screenshots/03_raw_storage_structure.png",
+    "reports/screenshots/11_MLRUNS.png",
+    "reports/screenshots/91_repository_structure.png",
+    "reports/screenshots/airflow.png"
+  ],
+  "eda_images_included": [
+    "category_distribution.png",
+    "interaction_type_distribution.png",
+    "interactions_over_time.png",
+    "item_popularity_distribution.png",
+    "numerical_correlation_heatmap.png",
+    "price_distribution.png",
+    "rating_distribution.png",
+    "user_interaction_distribution.png",
+    "user_item_sparsity_heatmap.png"
+  ],
+  "missing_evidence": [
+    "Optional DVC CLI status and DAG output"
+  ],
+  "page_count": 33,
+  "pdf_file_size": 2067484,
+  "validation": "PASSED"
+}
