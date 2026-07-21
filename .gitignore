@@ -47,3 +47,4 @@ logs/airflow/
 logs/scheduler/
 reports/orchestration/
 *.pid
+/file/opt/airflow/project

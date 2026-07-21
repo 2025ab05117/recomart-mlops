@@ -1,0 +1,36 @@
+# Human-editable metadata for RecoMart report generators.
+report:
+  title: "RecoMart Recommendation System"
+  subtitle: "End-to-End Data Engineering and MLOps Pipeline"
+  institution: "BITS Pilani – Work Integrated Learning Programmes"
+  assignment: "DM4DL Assignment"
+  version: "1.0"
+  academic_year: "2026"
+  generated_by: "RecoMart Project Report Generator"
+
+project:
+  repository: "recomart-mlops"
+  domain: "Recommendation Systems"
+  objective: "End-to-End Data Engineering and MLOps Pipeline"
+
+# Add or remove complete list items; keep serial_no values unique and ordered.
+team:
+  - serial_no: 1
+    name: "RAMAMURTHY S"
+    bits_id: "2025ab05099@wilp.bits-pilani.ac.in"
+
+  - serial_no: 2
+    name: "MEGHA ASHWIN KANU"
+    bits_id: "2025ab05130@wilp.bits-pilani.ac.in"
+
+  - serial_no: 3
+    name: "RANJITA PATEL"
+    bits_id: "2025ab05117@wilp.bits-pilani.ac.in"
+
+  - serial_no: 4
+    name: "KIRAN KUMAR DEVARA"
+    bits_id: "2025ab05105@wilp.bits-pilani.ac.in"
+
+  - serial_no: 5
+    name: "VIVEK RANJAN UPADHYAY"
+    bits_id: "2025ab05127@wilp.bits-pilani.ac.in"

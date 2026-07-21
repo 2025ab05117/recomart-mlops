@@ -1,0 +1,179 @@
+﻿report:
+  title: "RecoMart: An End-to-End MLOps Pipeline for Product Recommendation"
+  subtitle: "Design and Initial Implementation Report"
+  version: "1.0"
+  author: "RecoMart Project Team"
+  submission_date: "To be updated before submission"
+  output_path: "reports/recomart_project_report_v1.pdf"
+
+institution:
+  name: "Birla Institute of Technology and Science, Pilani"
+  course: "Data Management for Deep Learning"
+  academic_term: "Second Semester"
+
+# Replace these placeholders with official names and IDs before submission.
+team_members:
+  - name: "Team Member 1"
+    student_id: "Student ID"
+    contribution: "Data ingestion, validation, and documentation"
+  - name: "Team Member 2"
+    student_id: "Student ID"
+    contribution: "Feature engineering, modeling, and evaluation"
+  - name: "Team Member 3"
+    student_id: "Student ID"
+    contribution: "MLOps architecture, orchestration, and reporting"
+
+abstract:
+  - >-
+    RecoMart is an academic recommendation-system project demonstrating how
+    data-management and machine-learning engineering practices combine in a
+    reproducible pipeline. It uses MovieLens 100K to construct customer,
+    product, interaction, purchase, and popularity assets; validates and
+    prepares them; engineers recommendation features; and trains collaborative
+    and content-based recommendation models.
+  - >-
+    This first report version documents the architecture, processing stages,
+    design rationale, reproducibility principles, and known limitations. It
+    deliberately contains authored static content only. Runtime metrics,
+    screenshots, experiment records, orchestration results, feature-store
+    queries, and dynamically discovered pipeline artifacts are out of scope.
+
+sections:
+  - title: "Introduction"
+    paragraphs:
+      - >-
+        Recommendation systems help users navigate large catalogues by ranking
+        items according to predicted relevance. Building a useful model is only
+        one part of the problem: supporting data must be collected, validated,
+        transformed, versioned, and presented through a repeatable engineering
+        process. RecoMart addresses this broader lifecycle as a compact,
+        academically inspectable MLOps project.
+      - >-
+        The repository follows a layered design in which each processing stage
+        has a focused responsibility and publishes explicit artifacts for the
+        next stage. This improves traceability, reduces accidental coupling, and
+        makes failures easier to locate and reason about.
+
+  - title: "Project Objectives and Scope"
+    paragraphs:
+      - >-
+        The primary objective is to demonstrate a maintainable recommendation
+        workflow from source-data generation through model evaluation while
+        preserving clear contracts between stages.
+    bullets:
+      - "Create realistic recommendation inputs from MovieLens 100K."
+      - "Preserve immutable raw inputs and validate schema and business rules."
+      - "Prepare analysis-ready datasets and reusable recommendation features."
+      - "Train and compare collaborative and content-based approaches."
+      - "Maintain reproducibility through configuration and deterministic processing."
+      - "Document assumptions, decisions, evidence, and limitations clearly."
+
+  - title: "Dataset and Problem Definition"
+    paragraphs:
+      - >-
+        RecoMart is based on MovieLens 100K, a benchmark containing user ratings
+        for films. Films represent products and ratings provide the central
+        user-item preference signal. Generated assets supplement the source with
+        customer profiles, product metadata, clickstream-style interactions,
+        purchase-history records, and external-style popularity values.
+      - >-
+        The learning problem is to rank or score products for a user using past
+        preference signals and product attributes. Evaluation must distinguish
+        predictive performance from catalogue coverage and acknowledge the
+        cold-start difficulty associated with unseen users and products.
+
+  - title: "System Architecture"
+    paragraphs:
+      - >-
+        The logical data flow is Incoming to Raw to Validated to Prepared to
+        Features to Models to Reports. Each transition has a dedicated Python
+        package under src, while configuration remains external to processing
+        code. This prevents downstream stages from silently bypassing validation.
+    subsections:
+      - title: "Source generation and ingestion"
+        paragraphs:
+          - >-
+            Source generation converts MovieLens records into RecoMart domain
+            assets. File ingestion handles users, products, clickstream, and
+            purchases, while popularity is collected through a REST endpoint.
+            Raw publication retains source bytes, checksums, and batch metadata.
+      - title: "Validation and preparation"
+        paragraphs:
+          - >-
+            Validation checks required fields, types, ranges, uniqueness,
+            referential integrity, timestamps, and cross-dataset consistency.
+            Preparation cleans accepted records, reconciles entities, joins
+            optional popularity enrichment, and creates chronological splits.
+      - title: "Feature engineering and modeling"
+        paragraphs:
+          - >-
+            Feature engineering creates user, item, and interaction features
+            with explicit definitions. Modeling trains baseline, collaborative,
+            and content-oriented candidates and evaluates held-out observations
+            using recommendation-appropriate measures.
+
+  - title: "Implementation Approach"
+    paragraphs:
+      - >-
+        The implementation favors small, typed Python services and YAML-based
+        behavioral configuration. Public boundaries validate inputs, persisted
+        artifacts use stable locations, and tests isolate business behavior from
+        network or infrastructure dependencies.
+    bullets:
+      - "Python 3.12 is the target runtime."
+      - "Pandas and PyArrow support preparation and tabular artifacts."
+      - "FastAPI exposes the popularity source contract."
+      - "Scikit-learn supports preprocessing, baselines, and evaluation."
+      - "ReportLab renders this configuration-driven academic PDF."
+
+  - title: "Reproducibility and Quality Assurance"
+    paragraphs:
+      - >-
+        Reproducibility is supported by version-controlled code, constrained
+        dependencies, external configuration, deterministic random seeds,
+        chronological split definitions, and explicit artifact schemas.
+        Automated tests cover focused units and selected stage integrations.
+      - >-
+        Data quality is a pipeline gate rather than an informal inspection.
+        Invalid records are identified by named rules, accepted and rejected
+        counts are reconciled, and optional enrichment is distinguished from
+        data required for core processing.
+
+  - title: "Assumptions and Limitations"
+    paragraphs:
+      - >-
+        MovieLens ratings are treated as product-preference observations, while
+        generated commercial events are simulations rather than measurements
+        from a production marketplace. Offline results therefore do not prove
+        real-world business impact.
+    bullets:
+      - "The dataset is small and reflects an older film catalogue."
+      - "Simulated clicks, purchases, prices, and trends inherit generator assumptions."
+      - "Offline evaluation cannot directly measure satisfaction or long-term effects."
+      - "Cold-start behavior is constrained without historical interactions."
+      - "This version contains no dynamic execution evidence or pipeline metrics."
+
+  - title: "Future Work"
+    paragraphs:
+      - >-
+        Later versions can incorporate verified runtime evidence after the
+        static submission structure is reviewed. Suitable extensions include
+        model-comparison tables, quality summaries, lineage references,
+        experiment identifiers, and sourced visualizations, while preserving
+        the distinction between authored narrative and collected evidence.
+
+  - title: "Conclusion"
+    paragraphs:
+      - >-
+        RecoMart provides a foundation for studying recommendation systems as
+        complete data products rather than isolated algorithms. Layered
+        contracts, validation gates, reproducible configuration, and comparative
+        modeling establish a clear path from educational source data to auditable
+        recommendations. This report is maintainable and ready for later,
+        evidence-based extension.
+
+references:
+  - "F. M. Harper and J. A. Konstan, The MovieLens Datasets: History and Context, ACM TiiS, 2015."
+  - "GroupLens Research, MovieLens 100K Dataset, University of Minnesota."
+  - "ReportLab Software, ReportLab PDF Library User Guide."
+  - "Scikit-learn Developers, Scikit-learn User Guide."
