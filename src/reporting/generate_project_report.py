@@ -490,39 +490,19 @@ def _image(path: Path, caption: str, s: Mapping[str, ParagraphStyle]) -> list[An
     return [image, _p(caption, s["caption"])]
 
 
-def _pipeline() -> Drawing:
-    labels = [
-        "MovieLens Seed Data", "Synthetic Data Generator", "Data Ingestion",
-        "Raw Storage", "Validation and Quarantine",
-        "Data Preparation and EDA", "Feature Engineering", "Feature Store",
-        "DVC Versioning and Lineage", "Model Training and Evaluation",
-        "MLflow Experiment Tracking", "Apache Airflow Orchestration",
-    ]
-    drawing = Drawing(165 * mm, 205 * mm)
-    x, width, height, gap, y = 24 * mm, 117 * mm, 11 * mm, 5.5 * mm, 191 * mm
-    for index, label in enumerate(labels):
-        drawing.add(Rect(
-            x, y, width, height, rx=3, ry=3,
-            fillColor=PALE if index % 2 == 0 else colors.white,
-            strokeColor=BLUE,
-        ))
-        drawing.add(String(
-            82.5 * mm, y + 3.8 * mm, label, textAnchor="middle",
-            fontName="Helvetica-Bold", fontSize=8.4, fillColor=NAVY,
-        ))
-        if index < len(labels) - 1:
-            center = x + width / 2
-            drawing.add(Line(
-                center, y, center, y - gap + 1.5 * mm, strokeColor=BLUE
-            ))
-            drawing.add(Polygon(
-                [center - 1.8 * mm, y - gap + 3 * mm,
-                 center + 1.8 * mm, y - gap + 3 * mm,
-                 center, y - gap], fillColor=BLUE, strokeColor=BLUE,
-            ))
-        y -= height + gap
-    return drawing
-
+def _pipeline() -> Image:
+    path = ROOT / "reports/screenshots/endtoendpipeline.png"
+    if not path.is_file():
+        raise ReportConfigurationError(
+            "Required pipeline image not found:\n"
+            "reports/screenshots/endtoendpipeline.png"
+        )
+    image = Image(str(path))
+    scale = min(165 * mm / image.imageWidth, 190 * mm / image.imageHeight, 1)
+    image.drawWidth = image.imageWidth * scale
+    image.drawHeight = image.imageHeight * scale
+    image.hAlign = "CENTER"
+    return image
 
 def _add_docs(
     story: list[Any], sources: Sequence[tuple[str, str]],
@@ -978,7 +958,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     logging.basicConfig(
         level=logging.INFO, format="%(levelname)s %(name)s %(message)s"
     )
-    generate_report(args.config)
+    configured = yaml.safe_load(args.config.read_text(encoding="utf-8")) or {}
+    if configured.get("report", {}).get("versioning"):
+        from src.reporting.generate_project_report_docx import generate
+        output, evidence = generate(args.config)
+        print(json.dumps({"output": str(output), **evidence}, indent=2))
+    else:
+        generate_report(args.config)
     return 0
 
 

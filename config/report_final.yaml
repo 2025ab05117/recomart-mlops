@@ -3,10 +3,15 @@ report:
   subtitle: "End-to-End Data Engineering and MLOps Pipeline"
   institution: "BITS Pilani – Work Integrated Learning Programmes"
   assignment: "DM4DL Assignment"
-  version: "2.0"
-  output: "reports/final/RecoMart_Project_Report_v2.docx"
   generated_date: true
 
+  versioning:
+    mode: "auto_increment"
+    prefix: "v"
+    output_directory: "reports/final"
+    filename_template: "RecoMart_Project_Report_{version}.docx"
+    scan_existing_reports: true
+    starting_version: 1
 format:
   page_size: "A4"
   orientation: "portrait"
@@ -44,68 +49,104 @@ sections:
   - id: "project_title"
     title: "Project Title"
     type: "title_page"
+    render_mode: "title_page"
     enabled: true
 
   - id: "team_members"
     title: "Team Member Details"
     type: "team_table"
+    render_mode: "team_table"
     enabled: true
 
   - id: "problem_statement"
     title: "Problem Statement"
-    type: "markdown"
+    type: "markdown_file"
     enabled: true
-    sources:
-      - "README.md"
-      - "docs/architecture/**/*.md"
-      - "docs/pipeline/**/*.md"
-    include_topics:
-      - "problem statement"
-      - "business problem"
-      - "recommendation system"
-      - "data challenges"
-      - "reproducibility"
+    source_file: "docs/assignment/problem_statement.md"
 
+    rendering:
+      include_source_heading: false
+      render_paragraphs: true
+      render_tables: false
+      render_images: false
+      render_code_blocks: false
+      render_lists: false
+      render_subheadings: false
+      preserve_paragraph_order: true
+      preserve_inline_formatting: true
+      maximum_words: 500
+
+    validation:
+      source_required: true
+      reject_empty_content: true
+      reject_tables: true
+      reject_code_blocks: true
+      reject_additional_sources: true
   - id: "objectives"
     title: "Objectives"
     type: "markdown"
+    render_mode: "numbered_list"
     enabled: true
-    sources:
-      - "README.md"
-      - "docs/instructions/**/*.md"
-      - "docs/pipeline/**/*.md"
-    include_topics:
-      - "objectives"
-      - "goals"
-      - "expected outcomes"
-      - "deliverables"
-
+    source: "assignment"
   - id: "methodology_pipeline"
     title: "Methodology / Pipeline"
-    type: "markdown_and_pipeline"
+    type: "methodology"
     enabled: true
+
     sources:
       - "docs/architecture/**/*.md"
       - "docs/pipeline/**/*.md"
       - "README.md"
-    pipeline:
-      - "MovieLens Seed Data"
-      - "Synthetic Data Generator"
-      - "Data Ingestion"
-      - "Raw Storage"
-      - "Validation and Quarantine"
-      - "Data Preparation and EDA"
-      - "Feature Engineering"
-      - "Feature Store"
-      - "DVC Versioning and Lineage"
-      - "Model Training and Evaluation"
-      - "MLflow Experiment Tracking"
-      - "Apache Airflow Orchestration"
 
+    pipeline_image:
+      path: "reports/screenshots/endtoendpipeline.png"
+      required: true
+      caption: "Figure: RecoMart End-to-End Data Management and MLOps Pipeline"
+      alignment: "center"
+      preserve_aspect_ratio: true
+      max_width_inches: 6.3
+      max_height_inches: 7.5
+
+    rendering:
+      include_overview: true
+      include_pipeline_image: true
+      generate_pipeline_image: false
+      include_transition_table: false
+      include_stage_summary: true
+      maximum_overview_paragraphs: 2
+      maximum_stage_words: 60
+
+    pipeline_stages:
+      - name: "MovieLens Seed Data"
+        description: "Provides the base user, product, rating, and interaction data used by the synthetic data generator."
+      - name: "Synthetic Data Generation"
+        description: "Generates users, products, clickstream events, purchase history, and popularity data for repeatable pipeline execution."
+      - name: "Data Ingestion"
+        description: "Collects CSV, JSON, and REST API data and publishes immutable source records with ingestion manifests."
+      - name: "Raw Storage"
+        description: "Preserves ingested source data in its original format using partitioned local or S3-compatible storage."
+      - name: "Validation and Quarantine"
+        description: "Profiles datasets, applies schema and business rules, and separates valid records from rejected records."
+      - name: "Data Preparation and EDA"
+        description: "Cleans and standardizes validated data, creates analytical datasets, and produces exploratory data-analysis outputs."
+      - name: "Feature Engineering"
+        description: "Creates reproducible user, item, user-item, co-occurrence, and similarity features."
+      - name: "Feature Store"
+        description: "Persists versioned feature definitions and materializations for consistent training and retrieval."
+      - name: "DVC Versioning and Lineage"
+        description: "Versions datasets and artifacts while maintaining traceability across pipeline stages."
+      - name: "Model Training and Evaluation"
+        description: "Trains collaborative-filtering and content-based recommendation models and evaluates their performance."
+      - name: "MLflow Experiment Tracking"
+        description: "Records model parameters, metrics, run identifiers, and generated model artifacts."
+      - name: "Apache Airflow Orchestration"
+        description: "Coordinates the complete pipeline while keeping business logic inside reusable application modules."
   - id: "implementation_details"
     title: "Implementation Details"
     type: "implementation"
+    render_mode: "implementation"
     enabled: true
+    source: "technical_docs"
     subsections:
       - title: "Synthetic Data Generation"
         sources:
@@ -116,7 +157,7 @@ sections:
         sources:
           - "docs/pipeline/**/*ingestion*.md"
 
-      - title: "Storage Structure"
+      - title: "Raw Storage"
         sources:
           - "docs/architecture/**/*storage*.md"
           - "docs/pipeline/**/*storage*.md"
@@ -160,17 +201,15 @@ sections:
   - id: "results"
     title: "Results and Output Screenshots"
     type: "results"
+    render_mode: "evidence"
     enabled: true
-    include:
-      - "screenshots"
-      - "latest_eda"
-      - "feature_store_summary"
-      - "dvc_summary"
-      - "mlflow_summary"
+    source: "repository_evidence"
+    evidence_configuration: "results_and_outputs"
 
   - id: "conclusion_future_scope"
     title: "Conclusion and Future Scope"
     type: "markdown"
+    render_mode: "conclusion"
     enabled: true
     sources:
       - "README.md"
@@ -182,6 +221,16 @@ sections:
       - "future scope"
       - "future enhancements"
 
+content_sources:
+  assignment:
+    - "docs/assignment/ASSIGNMENT_CONTEXT.md"
+  pipeline_docs:
+    - "docs/architecture/**/*.md"
+    - "docs/pipeline/**/*.md"
+  technical_docs:
+    - "docs/pipeline/**/*.md"
+    - "docs/operations/**/*.md"
+  repository_evidence: []
 artifacts:
   screenshots:
     directories:
@@ -261,17 +310,52 @@ artifacts:
     include_run_ids: true
 
 content_rules:
-  use_markdown_as_source_of_truth: true
+  use_markdown_as_reference: true
+  copy_full_documents: false
+  summarise_before_rendering: true
   avoid_duplicate_paragraphs: true
-  remove_markdown_navigation_text: true
-  exclude_headings:
-    - "Table of Contents"
-    - "Navigation"
-    - "Document Index"
-  maximum_paragraphs_per_source: 8
-  unsupported_content_behavior: "skip"
-  missing_source_behavior: "continue"
+  avoid_duplicate_tables: true
+  avoid_duplicate_code_blocks: true
+  remove_navigation_content: true
+  remove_document_indexes: true
+  remove_back_links: true
+  remove_setup_prerequisites: true
+  remove_installation_commands: true
+  remove_contributor_instructions: true
+  remove_coding_standards: true
 
+  section_limits:
+    problem_statement:
+      maximum_paragraphs: 4
+      maximum_words: 350
+    objectives:
+      maximum_items: 12
+      maximum_words: 250
+    methodology_pipeline:
+      maximum_paragraphs: 5
+      maximum_words: 500
+    implementation_subsection:
+      maximum_paragraphs: 3
+      maximum_words: 300
+    conclusion:
+      maximum_paragraphs: 3
+      maximum_words: 300
+    future_scope:
+      maximum_items: 8
+
+  code_excerpt:
+    enabled: true
+    maximum_files_per_deliverable: 1
+    maximum_lines_per_file: 18
+    include_only_relevant_function: true
+  log_excerpt:
+    enabled: true
+    maximum_lines: 15
+    prefer_success_summary: true
+  tables:
+    maximum_sample_rows: 5
+    maximum_columns: 8
+  missing_source_behavior: "continue"
 validation:
   required_section_ids:
     - "project_title"
@@ -285,3 +369,351 @@ validation:
   reject_additional_top_level_sections: true
   require_all_team_members: true
   require_output_file: true
+
+results_and_outputs:
+  title: "Results and Output Screenshots"
+
+  deliverables:
+
+    - id: 1
+      title: "Problem Formulation"
+      requirements:
+        - "A short report outlining the problem definition, objectives, data sources, and expected pipeline outcomes."
+      evidence:
+        - type: "document_link"
+          label: "Problem Formulation Report"
+          file_patterns:
+            - "reports/**/*problem*.pdf"
+            - "reports/**/*overview*.pdf"
+            - "reports/**/*short*report*.pdf"
+          latest_only: true
+          required: true
+
+        - type: "markdown_summary"
+          sources:
+            - "README.md"
+            - "docs/architecture/**/*.md"
+            - "docs/pipeline/**/*.md"
+            - "docs/reporting/**/*.md"
+          include_topics:
+            - "problem statement"
+            - "objectives"
+            - "data sources"
+            - "expected outcomes"
+          maximum_paragraphs: 4
+
+    - id: 2
+      title: "Data Collection and Ingestion"
+      requirements:
+        - "Python scripts for ingestion."
+        - "Logs showing ingestion success or failure."
+        - "Folder or bucket structure for raw data."
+      evidence:
+        - type: "code_excerpt"
+          source_patterns:
+            - "src/ingestion/**/*.py"
+            - "src/**/*ingest*.py"
+          max_files: 3
+          max_lines_per_file: 35
+          include_filename: true
+
+        - type: "log_excerpt"
+          source_patterns:
+            - "logs/**/*ingestion*.log"
+            - "reports/**/*ingestion*.log"
+            - "logs/**/*.log"
+          latest_only: true
+          max_files: 2
+          max_lines_per_file: 40
+
+        - type: "folder_tree"
+          root_patterns:
+            - "data/incoming"
+            - "data/raw"
+          max_depth: 3
+
+        - type: "screenshot"
+          file_patterns:
+            - "reports/screenshots/*repository*"
+            - "reports/screenshots/*clickstream*"
+            - "reports/screenshots/*purchase*"
+            - "screenshots/*repository*"
+            - "screenshots/*clickstream*"
+            - "screenshots/*purchase*"
+          include_all_matches: true
+
+    - id: 3
+      title: "Raw Storage"
+      requirements:
+        - "Storage structure documentation."
+        - "Upload scripts or configuration files."
+      evidence:
+        - type: "markdown_summary"
+          sources:
+            - "docs/architecture/**/*storage*.md"
+            - "docs/pipeline/**/*storage*.md"
+            - "docs/operations/**/*storage*.md"
+          maximum_paragraphs: 5
+
+        - type: "code_excerpt"
+          source_patterns:
+            - "src/**/*upload*.py"
+            - "src/**/*storage*.py"
+            - "config/**/*storage*.yaml"
+            - "config/**/*s3*.yaml"
+            - "config/**/*.yml"
+          max_files: 4
+          max_lines_per_file: 30
+          include_filename: true
+
+        - type: "folder_tree"
+          root_patterns:
+            - "data"
+          max_depth: 3
+
+        - type: "screenshot"
+          file_patterns:
+            - "reports/screenshots/*raw_storage*"
+            - "reports/screenshots/*storage_structure*"
+            - "screenshots/*raw_storage*"
+            - "screenshots/*storage_structure*"
+          include_all_matches: true
+
+    - id: 4
+      title: "Data Profiling and Validation"
+      requirements:
+        - "Python code for automated validation."
+        - "Data profiling and validation summary."
+        - "Data Quality Report."
+      evidence:
+        - type: "code_excerpt"
+          source_patterns:
+            - "src/validation/**/*.py"
+            - "src/**/*validation*.py"
+            - "src/**/*quality*.py"
+          max_files: 4
+          max_lines_per_file: 35
+          include_filename: true
+
+        - type: "document_link"
+          label: "Data Quality Report"
+          file_patterns:
+            - "reports/**/*data*quality*.pdf"
+            - "reports/**/*quality*report*.pdf"
+            - "reports/validation/**/*.pdf"
+          latest_only: true
+          required: true
+
+        - type: "json_summary"
+          file_patterns:
+            - "reports/validation/**/*summary*.json"
+            - "reports/data_quality/**/*summary*.json"
+            - "reports/**/*validation*summary*.json"
+          latest_only: true
+
+        - type: "screenshot"
+          file_patterns:
+            - "reports/screenshots/*quality*"
+            - "reports/screenshots/*validation*"
+            - "screenshots/*quality*"
+            - "screenshots/*validation*"
+          include_all_matches: true
+
+    - id: 5
+      title: "Data Preparation"
+      requirements:
+        - "Jupyter notebook or script demonstrating cleaning and EDA."
+        - "Summary plots such as histograms and heatmaps."
+        - "Prepared dataset ready for transformation."
+      evidence:
+        - type: "code_excerpt"
+          source_patterns:
+            - "src/preparation/**/*.py"
+            - "src/**/*prepare*.py"
+            - "notebooks/**/*eda*.ipynb"
+            - "notebooks/**/*preparation*.ipynb"
+          max_files: 4
+          max_lines_per_file: 30
+          include_filename: true
+
+        - type: "latest_eda_batch"
+          artifact_reference: "eda"
+          include_all_images: true
+          include_summary_json: true
+          images_per_page: 2
+
+        - type: "dataset_summary"
+          source_patterns:
+            - "data/prepared/**/*.csv"
+            - "data/prepared/**/*.parquet"
+          include_rows: true
+          include_columns: true
+          include_sample_rows: true
+          sample_row_limit: 5
+          max_files: 6
+
+    - id: 6
+      title: "Feature Engineering"
+      requirements:
+        - "SQL schema."
+        - "Transformation scripts."
+        - "Summary of feature logic."
+      evidence:
+        - type: "code_excerpt"
+          source_patterns:
+            - "src/feature_engineering/**/*.py"
+            - "src/**/*feature*.py"
+            - "sql/**/*.sql"
+          max_files: 5
+          max_lines_per_file: 35
+          include_filename: true
+
+        - type: "markdown_summary"
+          sources:
+            - "docs/pipeline/**/*feature*.md"
+            - "docs/architecture/**/*feature*.md"
+          include_topics:
+            - "feature logic"
+            - "user features"
+            - "item features"
+            - "interaction features"
+            - "co-occurrence"
+            - "similarity"
+          maximum_paragraphs: 6
+
+        - type: "feature_logic_table"
+          source_patterns:
+            - "src/feature_engineering/**/*.py"
+            - "docs/pipeline/**/*feature*.md"
+
+    - id: 7
+      title: "Feature Store"
+      requirements:
+        - "Feature-store configuration or code."
+        - "Feature metadata documentation."
+        - "Sample feature retrieval demonstration."
+      evidence:
+        - type: "sqlite_summary"
+          artifact_reference: "feature_store"
+          include_schema: true
+          include_row_counts: true
+          include_primary_keys: true
+          include_sample_rows: true
+          sample_row_limit: 5
+
+        - type: "code_excerpt"
+          source_patterns:
+            - "src/**/*feature_store*.py"
+            - "src/**/*feature*registry*.py"
+            - "src/**/*feature*repository*.py"
+          max_files: 4
+          max_lines_per_file: 35
+          include_filename: true
+
+        - type: "markdown_summary"
+          sources:
+            - "docs/pipeline/**/*feature_store*.md"
+            - "docs/architecture/**/*feature*.md"
+          maximum_paragraphs: 5
+
+    - id: 8
+      title: "Data Versioning and Lineage"
+      requirements:
+        - "Repository structure showing dataset versions."
+        - "Documentation of the versioning workflow."
+      evidence:
+        - type: "dvc_summary"
+          artifact_reference: "dvc"
+          include_stages: true
+          include_dependencies: true
+          include_outputs: true
+          include_commands: true
+          include_cli_output_when_available: true
+
+        - type: "markdown_summary"
+          sources:
+            - "docs/pipeline/**/*version*.md"
+            - "docs/operations/**/*dvc*.md"
+            - "docs/architecture/**/*lineage*.md"
+          maximum_paragraphs: 6
+
+        - type: "screenshot"
+          file_patterns:
+            - "reports/screenshots/*repository*"
+            - "reports/screenshots/*dvc*"
+            - "screenshots/*repository*"
+            - "screenshots/*dvc*"
+          include_all_matches: true
+
+    - id: 9
+      title: "Model Training and Evaluation"
+      requirements:
+        - "Training and evaluation script."
+        - "Model performance report."
+        - "Tracked model metadata including run IDs, parameters, and metrics."
+      evidence:
+        - type: "code_excerpt"
+          source_patterns:
+            - "src/modeling/**/*.py"
+            - "src/**/*train*.py"
+            - "src/**/*evaluation*.py"
+          max_files: 5
+          max_lines_per_file: 35
+          include_filename: true
+
+        - type: "mlflow_summary"
+          artifact_reference: "mlflow"
+          latest_successful_runs: true
+          include_run_ids: true
+          include_parameters: true
+          include_metrics: true
+          include_status: true
+
+        - type: "document_link"
+          label: "Model Performance Report"
+          file_patterns:
+            - "reports/model_training/**/*.pdf"
+            - "reports/**/*model*performance*.pdf"
+            - "reports/**/*evaluation*.pdf"
+          latest_only: true
+          required: false
+
+        - type: "screenshot"
+          file_patterns:
+            - "reports/screenshots/*mlrun*"
+            - "reports/screenshots/*mlflow*"
+            - "screenshots/*mlrun*"
+            - "screenshots/*mlflow*"
+          include_all_matches: true
+
+    - id: 10
+      title: "Pipeline Orchestration"
+      requirements:
+        - "Orchestration DAG or code."
+        - "Screenshots or logs showing successful execution."
+      evidence:
+        - type: "code_excerpt"
+          source_patterns:
+            - "dags/**/*.py"
+            - "airflow/**/*.py"
+            - "src/**/*orchestration*.py"
+          max_files: 4
+          max_lines_per_file: 40
+          include_filename: true
+
+        - type: "log_excerpt"
+          source_patterns:
+            - "logs/**/*airflow*.log"
+            - "airflow/logs/**/*.log"
+            - "reports/**/*orchestration*.log"
+          latest_only: true
+          max_files: 2
+          max_lines_per_file: 40
+
+        - type: "screenshot"
+          file_patterns:
+            - "reports/screenshots/*airflow*"
+            - "reports/screenshots/*dag*"
+            - "screenshots/*airflow*"
+            - "screenshots/*dag*"
+          include_all_matches: true
